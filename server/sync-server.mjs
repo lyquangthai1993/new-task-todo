@@ -146,7 +146,15 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    if (url.pathname === "/api/clear" && (req.method === "POST" || req.method === "DELETE")) {
+      db.exec("DELETE FROM store");
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: true, message: "Cleared all database rows" }));
+      return;
+    }
+
     res.writeHead(404, { "Content-Type": "application/json" });
+
     res.end(JSON.stringify({ error: "Not found" }));
   } catch (err) {
     console.error("Server error:", err);

@@ -180,3 +180,28 @@ export async function importDataFromFile(file: File): Promise<{ success: boolean
     reader.readAsText(file);
   });
 }
+
+export async function clearAllData(): Promise<{ success: boolean; message: string }> {
+  try {
+    if (hasChromeStorage()) {
+      await chrome.storage.local.clear();
+    }
+    localStorage.clear();
+
+    try {
+      await fetch(`${SERVER_URL}/api/clear`, {
+        method: "POST",
+      });
+    } catch {
+      // server offline
+    }
+
+    return { success: true, message: "Đã xóa toàn bộ dữ liệu thành công!" };
+  } catch (err) {
+    return {
+      success: false,
+      message: `Lỗi khi xóa dữ liệu: ${err instanceof Error ? err.message : "Unknown error"}`,
+    };
+  }
+}
+

@@ -1,9 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Download, Upload, Server, CheckCircle2, AlertCircle, Database } from "lucide-react";
+import {
+  Download,
+  Upload,
+  Server,
+  CheckCircle2,
+  AlertCircle,
+  Database,
+  Trash2,
+  AlertTriangle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   checkSyncServerHealth,
+  clearAllData,
   exportAllData,
   importDataFromFile,
   migrateLocalDataToSQLite,
@@ -15,6 +34,11 @@ export default function DataSyncSection() {
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
+
+  // Modal reset dữ liệu state
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [resetConfirmInput, setResetConfirmInput] = useState("");
+  const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
     async function checkHealth() {
@@ -59,6 +83,26 @@ export default function DataSyncSection() {
       setTimeout(() => {
         window.location.reload();
       }, 1000);
+    }
+  }
+
+  async function handleConfirmReset() {
+    if (resetConfirmInput.trim() !== "RESET") return;
+
+    setIsClearing(true);
+    setStatusMsg("Đang xóa toàn bộ dữ liệu...");
+
+    const res = await clearAllData();
+    setIsClearing(false);
+    setIsResetModalOpen(false);
+    setResetConfirmInput("");
+
+    setStatusMsg(res.message);
+
+    if (res.success) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 600);
     }
   }
 
@@ -141,6 +185,17 @@ export default function DataSyncSection() {
           </Button>
         </label>
 
+        <Button
+          type="button"
+          variant="destructive"
+          size="sm"
+          onClick={() => setIsResetModalOpen(true)}
+          className="gap-1.5 text-xs font-medium"
+        >
+          <Trash2 className="h-4 w-4" />
+          Xóa sạch dữ liệu
+        </Button>
+
         {!health.connected && (
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground ml-auto">
             <Server className="h-3.5 w-3.5" />
@@ -148,6 +203,66 @@ export default function DataSyncSection() {
           </div>
         )}
       </div>
+
+      {/* Modal Xác nhận Reset dữ liệu */}
+      <Dialog open={isResetModalOpen} onOpenChange={setIsResetModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+              Xác nhận xóa toàn bộ dữ liệu (Reset)
+            </DialogTitle>
+            <DialogDescription className="pt-2 text-sm leading-relaxed">
+              Hành động này sẽ xóa vĩnh viễn tất cả công việc, thói quen, nhắc nhở, dấu trang và cài đặt hiện tại trên trình duyệt này
+              {health.connected ? " (và toàn bộ dữ liệu SQLite server)" : ""}.
+              <strong className="block mt-1.5 text-destructive font-semibold">
+                Dữ liệu sau khi xóa không thể phục hồi!
+              </strong>
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-2.5 py-2">
+            <Label
+              htmlFor="reset-confirm-input"
+              className="text-xs font-semibold text-foreground"
+            >
+              Nhập chữ <span className="font-mono font-bold text-destructive">RESET</span> để xác nhận:
+            </Label>
+            <Input
+              id="reset-confirm-input"
+              value={resetConfirmInput}
+              onChange={(e) => setResetConfirmInput(e.target.value)}
+              placeholder="RESET"
+              className="font-mono text-sm tracking-wider uppercase focus-visible:ring-destructive"
+              autoComplete="off"
+            />
+          </div>
+
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setIsResetModalOpen(false);
+                setResetConfirmInput("");
+              }}
+            >
+              Hủy
+            </Button>
+
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={resetConfirmInput.trim() !== "RESET" || isClearing}
+              onClick={handleConfirmReset}
+              className="gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              {isClearing ? "Đang xóa..." : "Xóa sạch dữ liệu"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
