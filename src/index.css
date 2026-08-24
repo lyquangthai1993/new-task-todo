@@ -85,6 +85,12 @@
 @layer base {
   * {
     border-color: var(--border);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(150, 160, 180, 0.25) transparent;
+  }
+
+  .dark * {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
 }
 
@@ -109,6 +115,35 @@ body {
 
 .dark body {
   color: var(--foreground);
+}
+
+/* Custom Scrollbar toàn ứng dụng (sleek, mỏng 5px, bo tròn, trong suốt) */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 160, 180, 0.3);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 160, 180, 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* Theming cho react-day-picker (Calendar) — override stylesheet gốc theo brand. */
@@ -150,7 +185,7 @@ body {
   text-transform: none;
 }
 
-/* Ẩn hoàn toàn scrollbar nhưng vẫn scroll được. */
+/* Ẩn hoàn toàn scrollbar nhưng vẫn scroll được khi cần. */
 .scrollbar-clean {
   scrollbar-width: none;
 }

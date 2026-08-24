@@ -46,7 +46,7 @@ export default function TaskDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] overflow-y-auto pr-5">
         <DialogHeader>
           <DialogTitle>Chi tiết task</DialogTitle>
         </DialogHeader>
