@@ -2,7 +2,7 @@ import { useLocalState } from "../../../hooks/use-local-state";
 import { createStorage } from "../../../utils/create-storage";
 import { HABITS_STORAGE_KEY } from "../constants/storage-keys";
 import type { Habit } from "../types/habit";
-import { toggleHabitToday } from "../utils/habit-streak";
+import { getTodayStr, toggleHabitToday } from "../utils/habit-streak";
 
 interface UseHabitsResult {
   habits: Habit[];
@@ -13,10 +13,17 @@ interface UseHabitsResult {
   deleteHabit: (id: string) => void;
 }
 
-const habitStorage = createStorage<Habit[]>(HABITS_STORAGE_KEY, []);
+const DEFAULT_HABITS: Habit[] = [
+  { id: "h1", name: "🏃‍♂️ Tập thể dục 30 phút", completedDates: [getTodayStr()], createdAt: new Date().toISOString() },
+  { id: "h2", name: "📚 Đọc sách 15 trang", completedDates: [], createdAt: new Date().toISOString() },
+  { id: "h3", name: "💧 Uống đủ 2L nước", completedDates: [getTodayStr()], createdAt: new Date().toISOString() },
+  { id: "h4", name: "🧘 Học kỹ năng / Tiếng Anh mới", completedDates: [], createdAt: new Date().toISOString() },
+];
+
+const habitStorage = createStorage<Habit[]>(HABITS_STORAGE_KEY, DEFAULT_HABITS);
 
 export function useHabits(): UseHabitsResult {
-  const [habits, persist, isLoading] = useLocalState<Habit[]>(habitStorage, []);
+  const [habits, persist, isLoading] = useLocalState<Habit[]>(habitStorage, DEFAULT_HABITS);
 
   function addHabit(name: string): void {
     const newHabit: Habit = {

@@ -64,7 +64,7 @@ export default function HabitsWidget() {
           </p>
         </div>
       ) : (
-        <ul className="flex flex-1 flex-col gap-2 overflow-y-auto max-h-[380px] scrollbar-thin pr-1">
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2.5 flex-1 overflow-y-auto max-h-[420px] scrollbar-thin pr-1">
           {habits.map((habit) => (
             <HabitItem
               key={habit.id}

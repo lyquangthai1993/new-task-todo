@@ -20,14 +20,11 @@ export default function DashboardPage() {
   const { settings, updateSettings } = useSettings();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // const isPlainBackground = settings.background === "none";
-
   return (
     <div className="flex min-h-screen w-full flex-col p-3">
       <div
         className={cn(
           "flex flex-1 flex-col rounded-3xl p-3 ring-1 ring-border-card backdrop-blur-xl sm:p-4",
-          // isPlainBackground ? "bg-surface/90" : "bg-surface/55",
         )}
       >
         <header className="mb-3 flex items-center justify-between rounded-full bg-surface p-2 px-4 ring-1 ring-border-card">
@@ -52,14 +49,14 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="grid items-stretch gap-3 lg:grid-cols-3">
-            <div className="flex">
-              <RemindersWidget />
-            </div>
-            <div className="flex">
+          <div className="grid items-stretch gap-3 lg:grid-cols-4">
+            <div className="flex lg:col-span-2">
               <HabitsWidget />
             </div>
-            <div className="flex">
+            <div className="flex lg:col-span-1">
+              <RemindersWidget />
+            </div>
+            <div className="flex lg:col-span-1">
               <BookmarksWidget />
             </div>
           </div>
