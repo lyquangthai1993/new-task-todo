@@ -16,9 +16,22 @@ interface UseSettingsResult {
   updateSettings: (patch: Partial<Settings>) => void;
 }
 
+function getInitialSettings(): Settings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (raw) {
+      return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+    }
+  } catch {
+    // Ignore parse error fallback
+  }
+  return DEFAULT_SETTINGS;
+}
+
 const settingsStorage = createStorage<Settings>(
   SETTINGS_STORAGE_KEY,
   DEFAULT_SETTINGS,
+  { skipServerSync: true },
 );
 
 function mergeDefaults(loaded: Settings): Settings {
@@ -28,9 +41,10 @@ function mergeDefaults(loaded: Settings): Settings {
 export function useSettings(): UseSettingsResult {
   const [settings, persist, isLoading] = useLocalState<Settings>(
     settingsStorage,
-    DEFAULT_SETTINGS,
+    getInitialSettings(),
     mergeDefaults,
   );
+
 
   useEffect(() => {
     function applyTheme(): void {

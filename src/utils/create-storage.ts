@@ -41,7 +41,16 @@ async function postServerValue<T>(key: string, value: T): Promise<void> {
   }
 }
 
-export function createStorage<T>(key: string, fallback: T): Storage<T> {
+export interface StorageOptions {
+  skipServerSync?: boolean;
+}
+
+export function createStorage<T>(
+  key: string,
+  fallback: T,
+  options?: StorageOptions,
+): Storage<T> {
+  const skipServerSync = options?.skipServerSync ?? false;
   const listeners = new Set<(value: T) => void>();
   let lastSerializedValue: string | null = null;
 
@@ -66,17 +75,19 @@ export function createStorage<T>(key: string, fallback: T): Storage<T> {
   async function load(): Promise<T> {
     const localVal = await loadLocal();
 
-    const serverVal = await fetchServerValue<T>(key);
-    if (serverVal !== null) {
-      const serverStr = JSON.stringify(serverVal);
-      if (serverStr !== JSON.stringify(localVal)) {
-        await saveLocal(serverVal);
-        lastSerializedValue = serverStr;
-        return serverVal;
+    if (!skipServerSync) {
+      const serverVal = await fetchServerValue<T>(key);
+      if (serverVal !== null) {
+        const serverStr = JSON.stringify(serverVal);
+        if (serverStr !== JSON.stringify(localVal)) {
+          await saveLocal(serverVal);
+          lastSerializedValue = serverStr;
+          return serverVal;
+        }
+      } else if (JSON.stringify(localVal) !== JSON.stringify(fallback)) {
+        // Auto Migrate: SQLite DB doesn't have data for key yet, but local browser does -> migrate to SQLite!
+        postServerValue(key, localVal);
       }
-    } else if (JSON.stringify(localVal) !== JSON.stringify(fallback)) {
-      // Auto Migrate: SQLite DB doesn't have data for key yet, but local browser does -> migrate to SQLite!
-      postServerValue(key, localVal);
     }
 
     lastSerializedValue = JSON.stringify(localVal);
@@ -91,11 +102,19 @@ export function createStorage<T>(key: string, fallback: T): Storage<T> {
     await saveLocal(value);
 
     // Sync in background to SQLite server (if online)
-    postServerValue(key, value);
+    if (!skipServerSync) {
+      postServerValue(key, value);
+    }
   }
 
   function subscribe(listener: (value: T) => void): () => void {
     listeners.add(listener);
+
+    if (skipServerSync) {
+      return () => {
+        listeners.delete(listener);
+      };
+    }
 
     // Periodically poll local server for cross-browser sync updates (Chrome <-> Brave)
     const interval = setInterval(async () => {
@@ -118,3 +137,4 @@ export function createStorage<T>(key: string, fallback: T): Storage<T> {
 
   return { load, save, subscribe };
 }
+
