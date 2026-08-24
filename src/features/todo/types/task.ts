@@ -1,0 +1,20 @@
+export type TaskStatus = "backlog" | "todo" | "doing" | "done";
+
+export type TaskScope = "week" | "month" | null;
+
+export type TaskView = "board" | "calendar";
+
+export interface Task {
+  id: string;
+  title: string;
+  description: string;
+  imageDataUrl: string | null;
+  imageName: string | null;
+  dueDate: string | null; // ISO "YYYY-MM-DD", null = không gắn ngày
+  dueTime: string | null; // "HH:mm", null = không gắn giờ
+  status: TaskStatus;
+  important: boolean;
+  scope: TaskScope;
+  createdAt: string; // ISO datetime
+  completedAt: string | null;
+}

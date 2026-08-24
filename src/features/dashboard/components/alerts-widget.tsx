@@ -1,0 +1,45 @@
+import { useMemo } from "react";
+import { WidgetCard } from "../../../components/widget-card";
+import { useReminders } from "../../reminders/hooks/use-reminders";
+import { useTasks } from "../../todo/hooks/use-tasks";
+import { buildAlerts } from "../utils/build-alerts";
+import AlertItem from "./alert-item";
+
+export default function AlertsWidget() {
+  const { tasks, isLoading: isTasksLoading } = useTasks();
+  const { reminders, isLoading: isRemindersLoading } = useReminders();
+
+  const isLoading = isTasksLoading || isRemindersLoading;
+  const alerts = useMemo(() => buildAlerts(tasks, reminders), [tasks, reminders]);
+
+  return (
+    <WidgetCard
+      title="Quan trọng"
+      icon={
+        <img
+          src="/icons/star.png"
+          alt=""
+          width={20}
+          height={20}
+          className="h-5 w-5 object-contain"
+        />
+      }
+      className="flex-1"
+      bodyClassName="scrollbar-clean overflow-y-auto"
+    >
+      {isLoading ? (
+        <p className="py-6 text-center text-sm text-muted">Đang tải…</p>
+      ) : alerts.length === 0 ? (
+        <p className="py-8 text-center text-sm text-muted opacity-70">
+          Tuyệt! Không có gì cần nhắc 🎉
+        </p>
+      ) : (
+        <ul className="flex flex-col">
+          {alerts.map((item) => (
+            <AlertItem key={item.key} item={item} />
+          ))}
+        </ul>
+      )}
+    </WidgetCard>
+  );
+}

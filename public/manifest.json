@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "Personal Tracker",
+  "version": "1.0.0",
+  "description": "Dashboard cá nhân (todo, nhắc việc, thói quen, ghi chú) mỗi khi mở tab mới",
+  "permissions": ["storage", "tabs"],
+  "chrome_url_overrides": { "newtab": "index.html" }
+}
