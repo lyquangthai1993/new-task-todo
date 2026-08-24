@@ -15,4 +15,6 @@ export interface Settings {
   theme: ThemeMode;
   accentColor: AccentColorKey;
   background: string; // id ảnh nền, "none" = trơn
+  showLunarCalendar?: boolean;
 }
+

@@ -101,7 +101,26 @@ export default function SettingsModal({
             />
           </div>
 
+          <div className="flex items-center justify-between rounded-xl border border-border p-3.5 bg-surface/50">
+            <div className="flex flex-col gap-0.5">
+              <Label htmlFor="lunar-toggle" className="text-sm font-medium cursor-pointer">
+                Hiển thị Lịch Âm ở Header
+              </Label>
+              <span className="text-xs text-muted-foreground">
+                Tự động chuyển đổi và hiển thị ngày Âm lịch Việt Nam
+              </span>
+            </div>
+            <input
+              id="lunar-toggle"
+              type="checkbox"
+              className="h-4 w-4 rounded border-border text-brand focus:ring-brand accent-brand cursor-pointer"
+              checked={settings.showLunarCalendar ?? true}
+              onChange={(e) => onChange({ showLunarCalendar: e.target.checked })}
+            />
+          </div>
+
           <DataSyncSection />
+
         </div>
       </DialogContent>
     </Dialog>

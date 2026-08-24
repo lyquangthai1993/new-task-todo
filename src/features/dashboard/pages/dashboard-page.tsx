@@ -28,7 +28,11 @@ export default function DashboardPage() {
         )}
       >
         <header className="mb-3 flex items-center justify-between rounded-full bg-surface p-2 px-4 ring-1 ring-border-card">
-          <GreetingHeader name={settings.boardName} />
+          <GreetingHeader
+            name={settings.boardName}
+            showLunarCalendar={settings.showLunarCalendar}
+          />
+
           <Button
             variant="primary"
             className="rounded-full"

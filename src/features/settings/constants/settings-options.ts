@@ -12,7 +12,9 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: "light",
   accentColor: "slate",
   background: "none",
+  showLunarCalendar: true,
 };
+
 
 export interface AccentOption {
   key: AccentColorKey;

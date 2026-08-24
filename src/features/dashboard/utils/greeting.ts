@@ -18,3 +18,27 @@ export function formatClock(date: Date): string {
 
   return `${hours}:${minutes}`;
 }
+
+const VIETNAMESE_DAYS = [
+  "Chủ Nhật",
+  "Thứ Hai",
+  "Thứ Ba",
+  "Thứ Tư",
+  "Thứ Năm",
+  "Thứ Sáu",
+  "Thứ Bảy",
+];
+
+// Định dạng ngày Dương lịch "DD/MM/YYYY" kèm Thứ.
+export function formatSolarDate(date: Date, includeDayOfWeek = true): string {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  const dateStr = `${day}/${month}/${year}`;
+
+  if (!includeDayOfWeek) return dateStr;
+
+  const dayOfWeek = VIETNAMESE_DAYS[date.getDay()];
+  return `${dayOfWeek}, ${dateStr}`;
+}
+
