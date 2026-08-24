@@ -4,7 +4,8 @@
 
 This project is a Chrome New Tab replacement called `new-tab-todo`. It is a personal dashboard for todos, recurring reminders, habits, bookmarks, greeting/status widgets, and settings. 
 
-Data persistence uses `chrome.storage.local` in the Chrome extension environment with a `localStorage` fallback in dev mode. An optional local Node.js SQLite server (`server/sync-server.mjs`) provides real-time cross-browser sync between Chrome and Brave browsers. Settings (theme/accent/background) use local-only storage (`skipServerSync: true`) to ensure zero-delay initial loads without FOUC (Flash of Unstyled Content).
+Data persistence uses `chrome.storage.local` in the Chrome extension environment with a `localStorage` fallback in dev mode. An optional local Node.js SQLite server (`server/sync-server.mjs`) provides real-time cross-browser sync between browsers. Settings (theme/accent/background) use local-only storage (`skipServerSync: true`) to ensure zero-delay initial loads without FOUC (Flash of Unstyled Content).
+
 
 ## Stack
 

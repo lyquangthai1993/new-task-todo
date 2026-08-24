@@ -116,7 +116,8 @@ export function createStorage<T>(
       };
     }
 
-    // Periodically poll local server for cross-browser sync updates (Chrome <-> Brave)
+    // Periodically poll local server for cross-browser sync updates
+
     const interval = setInterval(async () => {
       const serverVal = await fetchServerValue<T>(key);
       if (serverVal !== null) {

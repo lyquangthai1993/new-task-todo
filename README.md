@@ -27,8 +27,9 @@ Extension dành cho trình duyệt Chrome, Brave, Edge, Cốc Cốc... ghi đè 
 - Giao diện Sáng (Light), Tối (Dark), hoặc Tự động (Auto đổi theo giờ).
 - Bộ sưu tập Ảnh nền HD thiên nhiên/nghệ thuật và màu chủ đạo tùy chỉnh.
 
-### 6. 🔄 Đồng bộ Đa trình duyệt (Chrome <-> Brave) qua SQLite & File Vật lý
-- **Local SQLite Sync Server**: Tự động lưu trữ và đồng bộ dữ liệu thời gian thực giữa Chrome và Brave trên cùng máy tính qua file vật lý `data/db.sqlite`.
+### 6. 🔄 Đồng bộ Đa trình duyệt qua SQLite & File Vật lý
+- **Local SQLite Sync Server**: Tự động lưu trữ và đồng bộ dữ liệu thời gian thực giữa các trình duyệt trên cùng máy tính qua file vật lý `data/db.sqlite`.
+
 - **Tự động Migrate dữ liệu**: Tự động chuyển toàn bộ dữ liệu có sẵn trong bộ nhớ Chrome vào file SQLite.
 - **Sao lưu & Khôi phục File (.json)**: Xuất và Nhập dữ liệu sao lưu vật lý dạng JSON an toàn, 100% offline.
 

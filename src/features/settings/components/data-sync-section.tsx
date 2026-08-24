@@ -127,9 +127,10 @@ export default function DataSyncSection() {
 
       <p className="text-xs text-muted-foreground">
         {health.connected
-          ? `Đang lưu đồng bộ vào file SQLite: ${health.dbPath || "data/db.sqlite"}. Dữ liệu tự động đồng bộ giữa Chrome và Brave!`
-          : `Để tự động đồng bộ dữ liệu thời gian thực giữa các trình duyệt (Chrome, Brave), hãy chạy lệnh "npm run server" trong thư mục project.`}
+          ? `Đang lưu đồng bộ vào file SQLite: ${health.dbPath || "data/db.sqlite"}. Dữ liệu tự động đồng bộ giữa các trình duyệt!`
+          : `Để tự động đồng bộ dữ liệu thời gian thực giữa các trình duyệt, hãy chạy lệnh "npm run server" trong thư mục project.`}
       </p>
+
 
       {statusMsg && (
         <div className="rounded bg-muted p-2 text-xs text-foreground font-medium">
