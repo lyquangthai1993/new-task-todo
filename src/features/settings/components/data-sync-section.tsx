@@ -197,11 +197,15 @@ export default function DataSyncSection() {
         </Button>
 
         {!health.connected && (
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground ml-auto">
-            <Server className="h-3.5 w-3.5" />
-            Lưu vào SQLite: <code className="rounded bg-muted px-1">npm run server</code>
+          <div className="flex items-center gap-2 rounded-md bg-surface px-2.5 py-1 text-xs font-medium text-foreground border border-border shadow-2xs ml-auto">
+            <Server className="h-3.5 w-3.5 text-brand" />
+            <span>Lưu vào SQLite:</span>
+            <code className="rounded bg-brand/15 text-brand px-2 py-0.5 font-mono text-xs font-bold border border-brand/30">
+              npm run server
+            </code>
           </div>
         )}
+
       </div>
 
       {/* Modal Xác nhận Reset dữ liệu */}
