@@ -62,18 +62,18 @@ export default function TaskCard({
         )}
       </div>
 
-      {task.description && (
-        <p className="mt-1 text-xs leading-relaxed text-muted">
-          {task.description}
-        </p>
-      )}
-
       {task.imageDataUrl && (
         <img
           src={task.imageDataUrl}
           alt={task.imageName ?? task.title}
           className="mt-2 aspect-video w-full rounded-lg object-cover"
         />
+      )}
+
+      {task.description && (
+        <p className="mt-1 text-xs leading-relaxed text-muted">
+          {task.description}
+        </p>
       )}
 
       <div className="mt-2 flex flex-wrap gap-1.5">
