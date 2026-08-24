@@ -2,11 +2,13 @@ import { useLocalState } from "../../../hooks/use-local-state";
 import { createStorage } from "../../../utils/create-storage";
 import { HABITS_STORAGE_KEY } from "../constants/storage-keys";
 import type { Habit } from "../types/habit";
+import { toggleHabitToday } from "../utils/habit-streak";
 
 interface UseHabitsResult {
   habits: Habit[];
   isLoading: boolean;
   addHabit: (name: string) => void;
+  toggleToday: (id: string) => void;
   renameHabit: (id: string, name: string) => void;
   deleteHabit: (id: string) => void;
 }
@@ -20,9 +22,17 @@ export function useHabits(): UseHabitsResult {
     const newHabit: Habit = {
       id: crypto.randomUUID(),
       name: name.trim(),
+      completedDates: [],
+      createdAt: new Date().toISOString(),
     };
 
     persist([...habits, newHabit]);
+  }
+
+  function toggleToday(id: string): void {
+    persist(
+      habits.map((habit) => (habit.id === id ? toggleHabitToday(habit) : habit)),
+    );
   }
 
   function renameHabit(id: string, name: string): void {
@@ -44,6 +54,7 @@ export function useHabits(): UseHabitsResult {
     habits,
     isLoading,
     addHabit,
+    toggleToday,
     renameHabit,
     deleteHabit,
   };
