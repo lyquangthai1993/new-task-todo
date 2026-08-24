@@ -5,10 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/icons/cube.png" />
     <title>Personal Tracker</title>
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem("settings");
+          var theme = "light";
+          var accent = "slate";
+          var bg = "none";
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed.theme) theme = parsed.theme;
+            if (parsed.accentColor) accent = parsed.accentColor;
+            if (parsed.background) bg = parsed.background;
+          }
+          var hour = new Date().getHours();
+          var isDark =
+            theme === "dark" || (theme === "auto" && (hour < 6 || hour >= 18));
+          if (isDark) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+          var accentMap = {
+            emerald: { base: "#10b981", hover: "#059669" },
+            blue: { base: "#3b82f6", hover: "#2563eb" },
+            violet: { base: "#8b5cf6", hover: "#7c3aed" },
+            rose: { base: "#f43f5e", hover: "#e11d48" },
+            amber: { base: "#f59e0b", hover: "#d97706" },
+            slate: { base: "#0f172a", hover: "#1e293b" },
+          };
+          var accOption = accentMap[accent] || accentMap.slate;
+          document.documentElement.style.setProperty("--brand", accOption.base);
+          document.documentElement.style.setProperty(
+            "--brand-hover",
+            accOption.hover,
+          );
+          if (bg && bg !== "none") {
+            document.addEventListener("DOMContentLoaded", function () {
+              document.body.style.backgroundImage = 'url("/background/' + bg + '.avif")';
+            });
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-/
