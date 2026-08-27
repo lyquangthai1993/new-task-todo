@@ -66,10 +66,12 @@ export default function VocabularyManagerModal({
   function handleSpeak(wordText: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(wordText);
-    utterance.lang = "en-US";
-    utterance.rate = 0.8;
-    window.speechSynthesis.speak(utterance);
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(wordText);
+      utterance.lang = "en-US";
+      utterance.rate = 0.8;
+      window.speechSynthesis.speak(utterance);
+    }, 80);
   }
 
   return (
