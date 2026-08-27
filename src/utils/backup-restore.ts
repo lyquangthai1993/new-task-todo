@@ -4,6 +4,8 @@ export const ALL_STORAGE_KEYS = [
   "reminders",
   "habits",
   "bookmarks",
+  "vocabulary",
+  "vocabulary_daily",
 ];
 
 const SERVER_URL = "http://localhost:3001";
