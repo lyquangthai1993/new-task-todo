@@ -4,9 +4,12 @@ import Button from "../../../components/button/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "../../../components/ui/dialog";
+import { Button as UiButton } from "../../../components/ui/button";
 
 import type { VocabularyInput } from "../hooks/use-vocabulary";
 import type { VocabularyItem } from "../types";
@@ -33,6 +36,7 @@ export default function VocabularyManagerModal({
   const [searchQuery, setSearchQuery] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<VocabularyItem | null>(null);
+  const [deletingWord, setDeletingWord] = useState<VocabularyItem | null>(null);
 
   const filteredWords = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -180,9 +184,9 @@ export default function VocabularyManagerModal({
                       </button>
                       <button
                         type="button"
-                        onClick={() => onDeleteWord(item.id)}
+                        onClick={() => setDeletingWord(item)}
                         title="Xóa từ vựng"
-                        className="rounded-lg p-1.5 text-muted hover:bg-background hover:text-rose-500 transition-colors"
+                        className="rounded-lg p-1.5 text-muted hover:bg-background hover:text-rose-500 transition-colors cursor-pointer"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -201,6 +205,46 @@ export default function VocabularyManagerModal({
         onSubmit={handleFormSubmit}
         editingItem={editingItem}
       />
+
+      {/* Modal xác nhận xóa từ vựng (Are you sure popup) */}
+      <Dialog
+        open={Boolean(deletingWord)}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setDeletingWord(null);
+        }}
+      >
+        <DialogContent className="max-w-sm z-[60]">
+          <DialogHeader>
+            <DialogTitle>Xóa từ vựng?</DialogTitle>
+            <DialogDescription>
+              Bạn có chắc chắn muốn xóa từ{" "}
+              <strong className="text-foreground">"{deletingWord?.word}"</strong>{" "}
+              khỏi kho từ vựng không? Hành động này không thể hoàn tác.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0 mt-2">
+            <UiButton
+              type="button"
+              variant="outline"
+              onClick={() => setDeletingWord(null)}
+            >
+              Hủy
+            </UiButton>
+            <UiButton
+              type="button"
+              variant="destructive"
+              onClick={() => {
+                if (deletingWord) {
+                  onDeleteWord(deletingWord.id);
+                  setDeletingWord(null);
+                }
+              }}
+            >
+              Xóa từ
+            </UiButton>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

@@ -2,6 +2,15 @@ import { Eye, EyeOff, Trash2, Volume2 } from "lucide-react";
 import { useState } from "react";
 import type { VocabularyItem } from "../types";
 import HighlightWord from "./highlight-word";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface DailyWordCardProps {
   item: VocabularyItem;
@@ -15,6 +24,7 @@ export default function DailyWordCard({
   onDelete,
 }: DailyWordCardProps) {
   const [isRevealed, setIsRevealed] = useState(true);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   function handleSpeakText(textToSpeak: string, e?: React.MouseEvent) {
     if (e) e.stopPropagation();
@@ -77,7 +87,7 @@ export default function DailyWordCard({
             {onDelete && (
               <button
                 type="button"
-                onClick={() => onDelete(item.id)}
+                onClick={() => setIsConfirmOpen(true)}
                 title="Loại bỏ từ này khỏi kho từ vựng"
                 className="rounded-lg p-1 text-muted hover:bg-surface hover:text-rose-500 transition-colors cursor-pointer"
               >
@@ -117,6 +127,40 @@ export default function DailyWordCard({
           </button>
         )}
       </div>
+
+      {onDelete && (
+        <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Xóa từ vựng?</DialogTitle>
+              <DialogDescription>
+                Bạn có chắc chắn muốn xóa từ{" "}
+                <strong className="text-foreground">"{item.word}"</strong> khỏi kho
+                từ vựng không? Hành động này không thể hoàn tác.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="gap-2 sm:gap-0 mt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsConfirmOpen(false)}
+              >
+                Hủy
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => {
+                  onDelete(item.id);
+                  setIsConfirmOpen(false);
+                }}
+              >
+                Xóa từ
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
