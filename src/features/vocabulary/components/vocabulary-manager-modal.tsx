@@ -15,6 +15,7 @@ import type { VocabularyInput } from "../hooks/use-vocabulary";
 import type { VocabularyItem } from "../types";
 import VocabularyFormModal from "./vocabulary-form-modal";
 import HighlightWord from "./highlight-word";
+import { playEnglishSpeech } from "../utils/speech";
 
 interface VocabularyManagerModalProps {
   open: boolean;
@@ -68,14 +69,7 @@ export default function VocabularyManagerModal({
   }
 
   function handleSpeak(wordText: string) {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(wordText);
-      utterance.lang = "en-US";
-      utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
-    }, 80);
+    playEnglishSpeech(wordText);
   }
 
   return (

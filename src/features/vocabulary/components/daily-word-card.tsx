@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { playEnglishSpeech } from "../utils/speech";
 
 interface DailyWordCardProps {
   item: VocabularyItem;
@@ -28,15 +29,7 @@ export default function DailyWordCard({
 
   function handleSpeakText(textToSpeak: string, e?: React.MouseEvent) {
     if (e) e.stopPropagation();
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-
-    window.speechSynthesis.cancel();
-    setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      utterance.lang = "en-US";
-      utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
-    }, 80);
+    playEnglishSpeech(textToSpeak);
   }
 
   return (
