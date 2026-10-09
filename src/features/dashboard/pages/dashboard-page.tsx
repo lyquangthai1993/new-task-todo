@@ -1,10 +1,11 @@
 import { BookmarksWidget } from "@/features/bookmarks/components";
+import { TechNewsWidget } from "@/features/tech-news";
 import { VocabularyWidget } from "@/features/vocabulary";
 import { Settings } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { Button } from "../../../components/button";
 import { cn } from "../../../utils/cn";
-import { HabitsWidget } from "../../habits/components";
+// import { HabitsWidget } from "../../habits/components";
 // import { RemindersWidget } from "../../reminders/components";
 import { useSettings } from "../../settings/hooks/use-settings";
 import { TodoWidget } from "../../todo/components";
@@ -56,8 +57,11 @@ export default function DashboardPage() {
 
           <div className="grid items-stretch gap-3 lg:grid-cols-6">
             <div className="flex lg:col-span-2">
-              <HabitsWidget />
+              <TechNewsWidget />
             </div>
+            {/* <div className="flex lg:col-span-2">
+              <HabitsWidget />
+            </div> */}
             <div className="flex lg:col-span-2">
               <VocabularyWidget />
             </div>

@@ -4,5 +4,10 @@
   "version": "1.0.0",
   "description": "Dashboard cá nhân (todo, nhắc việc, thói quen, ghi chú) mỗi khi mở tab mới",
   "permissions": ["storage", "tabs"],
+  "host_permissions": [
+    "https://www.theverge.com/*",
+    "https://hn.algolia.com/*",
+    "https://api.rss2json.com/*"
+  ],
   "chrome_url_overrides": { "newtab": "index.html" }
 }
